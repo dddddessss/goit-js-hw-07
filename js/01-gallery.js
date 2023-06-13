@@ -1,33 +1,23 @@
 import { galleryItems } from './gallery-items.js';
-// Change code below this line
+
 const gallery = document.querySelector('.gallery');
+const ImagesMarkup = createItemsMarkup(galleryItems);
+gallery.insertAdjacentHTML("beforeend", ImagesMarkup);
 
-function createGalleryItem(item) {
-  const galleryItem = document.createElement('li');
-  galleryItem.classList.add('gallery__item');
-
-  const link = document.createElement('a');
-  link.classList.add('gallery__link');
-  link.href = item.original;
-
-  const image = document.createElement('img');
-  image.classList.add('gallery__image');
-  image.src = item.preview;
-  image.setAttribute('data-source', item.original);
-  image.alt = item.description;
-
-  link.appendChild(image);
-  galleryItem.appendChild(link);
-
-  return galleryItem;
+function createItemsMarkup(item) {
+  return galleryItems.map(({ preview, original, description }) => {
+    return `<li class="gallery__item">
+      <a class="gallery__link" href="${original}">
+        <img
+          class="gallery__image"
+          src="${preview}"
+          data-source="${original}"
+          alt="${description}"
+        />
+      </a>
+    </li>`;
+  }).join("");
 }
-
-function renderGallery() {
-  const galleryItemsElements = galleryItems.map(item => createGalleryItem(item));
-  gallery.append(...galleryItemsElements);
-}
-
-renderGallery();
 
 gallery.addEventListener('click', event => {
   event.preventDefault();
@@ -47,11 +37,11 @@ gallery.addEventListener('click', event => {
   });
 
   instance.show();
+
+  function handleKeyDown(event) {
+    if (event.code === 'Escape') {
+      instance.close();
+    }
+  }
 });
 
-function handleKeyDown(event) {
-  if (event.code === 'Escape') {
-    basicLightbox.close();
-  }
-}
-console.log(galleryItems);

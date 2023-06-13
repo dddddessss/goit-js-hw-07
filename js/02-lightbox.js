@@ -7,17 +7,13 @@ function createGalleryItem(item) {
   const galleryItem = document.createElement('li');
   galleryItem.classList.add('gallery__item');
 
-  const link = document.createElement('a');
-  link.classList.add('gallery__link');
-  link.href = item.original;
+  const html = `
+    <a class="gallery__link" href="${item.original}">
+      <img class="gallery__image" src="${item.preview}" alt="${item.description}" />
+    </a>
+  `;
 
-  const image = document.createElement('img');
-  image.classList.add('gallery__image');
-  image.src = item.preview;
-  image.alt = item.description;
-
-  link.appendChild(image);
-  galleryItem.appendChild(link);
+  galleryItem.insertAdjacentHTML('beforeend', html);
 
   return galleryItem;
 }
